@@ -167,12 +167,14 @@ def quick_sorted(xs, cmp=cmp_standard):
 
     if len(xs) == 1:
         return xs
+    elif xs == []:
+        return []
     else:
         p = random.choice(xs)
         less = []
         greater = []
         equal = []
-        for i in range(0, len(xs)):
+        for i in range(1, len(xs)):
             if xs[i] < p:
                 less.append(xs[i])
             elif xs[i] > p:
