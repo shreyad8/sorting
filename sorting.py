@@ -130,14 +130,17 @@ def merge_sorted(xs, cmp=cmp_standard):
     You should not modify the input list xs in any way.
     '''
 
-    if len(xs) == 1:
+    if xs == []:
+        return []
+    elif len(xs) == 1:
         return xs
     else:
-        left = xs[0: len(xs) // 2]
-        right = xs[len(xs) // 2:]
-        left_sorted = merge_sorted(left)
-        right_sorted = merge_sorted(right)
-        return _merged(left_sorted, right_sorted)
+        middle = len(xs) // 2
+        left = xs[:middle]
+        right = xs[middle:]
+        merge_sorted(left)
+        merge_sorted(right)
+        return _merged(left, right)
 
 
 def quick_sorted(xs, cmp=cmp_standard):
