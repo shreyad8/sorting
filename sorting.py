@@ -13,6 +13,7 @@ if cmp(a, b) returns  0, then a == b.
 '''
 
 import random
+from copy import copy
 
 
 def cmp_standard(a, b):
@@ -136,9 +137,9 @@ def merge_sorted(xs, cmp=cmp_standard):
         return xs
     else:
         middle = len(xs) // 2
-        left = merge_sorted(xs[:middle])
-        right = merge_sorted(xs[middle:])
-        return _merged(left, right)
+        left = merge_sorted(xs[:middle], cmp)
+        right = merge_sorted(xs[middle:], cmp)
+        return _merged(left, right, cmp)
 
 
 def quick_sorted(xs, cmp=cmp_standard):
@@ -166,29 +167,28 @@ def quick_sorted(xs, cmp=cmp_standard):
     You should not modify the input list xs in any way.
     '''
 
+    xs_copy = copy(xs)
     if len(xs) == 1:
-        return xs
+        return xs_copy
     elif xs == []:
         return []
     else:
-        p = random.choice(xs)
+        p = random.choice(xs_copy)
         less = []
         greater = []
         equal = []
-        for i in range(1, len(xs)):
-            if xs[i] < p:
-                less.append(xs[i])
-            elif xs[i] > p:
-                greater.append(xs[i])
+        for i in xs_copy:
+            if i < p:
+                less.append(i)
+            elif i > p:
+                greater.append(i)
             else:
-                equal.append(xs[i])
-        if less == []:
-            return equal + quick_sorted(greater)
-        elif greater == []:
-            return quick_sorted(less) + equal
+                equal.append(i)
+        less_sorted = quick_sorted(less, cmp)
+        greater_sorted = quick_sorted(greater, cmp)
+        if cmp == cmp_reverse:
+            return greater_sorted + equal + less_sorted
         else:
-            less_sorted = quick_sorted(less)
-            greater_sorted = quick_sorted(greater)
             return less_sorted + equal + greater_sorted
 
 
